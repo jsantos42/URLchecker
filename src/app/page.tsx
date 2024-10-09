@@ -9,11 +9,11 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full h-svh p-5 pt-20 flex flex-col items-center bg-[#850122] text-[#fff2ea]">
+    <div className="w-full h-svh p-5 pt-20 flex flex-col items-center bg-tuta text-peach">
       <h1 className="m-5 text-2xl font-bold">URL Checker</h1>
       <div className="w-full max-w-[500px] flex gap-3">
         <input
-          className="w-full px-4 py-1 bg-white text-[#850122] rounded-md"
+          className="w-full px-4 py-1 bg-white text-tuta rounded-md"
           type="url"
           value={url}
           onChange={onInputChange}
