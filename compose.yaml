@@ -1,0 +1,19 @@
+services:
+  frontend:
+    build: .
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NEXT_TELEMETRY_DISABLED=1
+    ports:
+      - 3000:3000
+    networks:
+      - container-network
+    restart: unless-stopped
+    command: npm run dev
+
+networks:
+  container-network:
+    driver: bridge
