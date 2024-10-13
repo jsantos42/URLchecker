@@ -2,32 +2,28 @@
 import { debounce } from "lodash";
 import { ChangeEvent, useCallback, useState } from "react";
 import { OutputMessage } from "./components/OutputMessage";
-
-// TODO: Docker
-// TODO: implement these functions
-const isValidUrl = (url: string) => {
-  return true;
-};
-const isFile = (url: string) => {
-  return false;
-};
-const isFolder = (url: string) => {
-  return false;
-};
+import { checkIfFileOrFolder, checkIfUrlExists, isValidUrl } from "./utils";
 
 export default function Home() {
   const [url, setUrl] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean | undefined>(undefined);
+  const [doesExist, setDoesExist] = useState<boolean | undefined>(undefined);
   const [isFileOrFolder, setIsFileOrFolder] = useState<boolean | undefined>(
     undefined,
   );
 
-  const checkUrl = (url: string) => {
+  const checkUrl = async (url: string) => {
     const urlIsValid = isValidUrl(url);
-    if (urlIsValid) {
-      setIsFileOrFolder(isFile(url) || isFolder(url));
-    }
     setIsValid(urlIsValid);
+
+    if (urlIsValid) {
+      const exists = await checkIfUrlExists(url);
+      setDoesExist(exists);
+
+      if (exists) {
+        setIsFileOrFolder(await checkIfFileOrFolder(url));
+      }
+    }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,7 +47,7 @@ export default function Home() {
           value={url}
           onChange={onInputChange}
         />
-        <OutputMessage {...{ isValid, isFileOrFolder }} />
+        <OutputMessage {...{ isValid, doesExist, isFileOrFolder }} />
       </div>
     </div>
   );
